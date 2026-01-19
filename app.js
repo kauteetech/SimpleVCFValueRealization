@@ -104,17 +104,17 @@ function showHelp(section) {
                     <p><strong>Annual Savings:</strong><br>
                     Savings per Core = Current Cost - VCF Cost<br>
                     Total Savings = Savings per Core × Total Cores</p>
-                    <p><em>Example: ($15,000 - $7,140) × 8,576 cores = $674 Lakhs/year</em></p>
+                    <p><em>Example: ($15,000 - $7,140) × 8,576 cores = $674 K/year</em></p>
 
                     <h4>🔧 Tool Consolidation</h4>
-                    <p><strong>Formula:</strong> Savings = (Number of Tools - 1) × $50 Lakhs per tool/year</p>
+                    <p><strong>Formula:</strong> Savings = (Number of Tools - 1) × $50 K per tooK/year</p>
                     <p>VCF eliminates separate L7 Firewall, IDPS, and ATP products into one unified platform.</p>
-                    <p><em>Example: 3 tools → 1 tool = 2 eliminated × $50L = $100 Lakhs/year saved</em></p>
+                    <p><em>Example: 3 tools → 1 tool = 2 eliminated × $50L = $100 K/year saved</em></p>
 
                     <h4>👥 FTE Optimization</h4>
                     <p><strong>Formula:</strong> FTEs Reduced = Current FTEs × 30% (automation factor)</p>
-                    <p><strong>Annual Savings:</strong> FTEs Reduced × $60 Lakhs per FTE/year</p>
-                    <p><em>Example: 4 FTEs × 30% = 1.2 FTEs → 1 FTE × $60L = $60 Lakhs/year</em></p>
+                    <p><strong>Annual Savings:</strong> FTEs Reduced × $60 K per FTE/year</p>
+                    <p><em>Example: 4 FTEs × 30% = 1.2 FTEs → 1 FTE × $60L = $60 K/year</em></p>
                 </div>
             `
         },
@@ -136,14 +136,14 @@ function showHelp(section) {
                     <p><strong>Current Cost:</strong> Tests/Year × Test Duration (days) × IT Daily Cost<br>
                     <strong>VCF Cost:</strong> Tests/Year × 0.5 days × IT Daily Cost<br>
                     <strong>Savings:</strong> Current Cost - VCF Cost</p>
-                    <p><em>Example: 2 tests × 3 days × $2L = $12L/year<br>
-                    VCF: 2 tests × 0.5 days × $2L = $2L/year<br>
-                    Savings: $10 Lakhs/year</em></p>
+                    <p><em>Example: 2 tests × 3 days × $2L = $12K/year<br>
+                    VCF: 2 tests × 0.5 days × $2L = $2K/year<br>
+                    Savings: $10 K/year</em></p>
 
                     <h4>⚠️ Downtime Risk Reduction</h4>
                     <p><strong>Formula:</strong> Hours Saved = Current RTO - VCF RTO<br>
                     <strong>Annual Value:</strong> Hours Saved × Downtime Cost/Hour × Expected Incidents/Year</p>
-                    <p><em>Example: (8 hours - 0.083 hours) × $50L/hour × 1 incident = $395 Lakhs/year</em></p>
+                    <p><em>Example: (8 hours - 0.083 hours) × $50K/hour × 1 incident = $395 K/year</em></p>
                 </div>
             `
         },
@@ -158,18 +158,18 @@ function showHelp(section) {
                     DRAM Saved per Host = DRAM per Host × 35%<br>
                     Total DRAM Savings = DRAM Saved × DRAM Cost/GB × Number of Hosts</p>
                     <p><em>Example: 2,048 GB × 35% = 716.8 GB saved per host<br>
-                    716.8 GB × $3,000/GB × 67 hosts = $1,440 Lakhs</em></p>
+                    716.8 GB × $3,000/GB × 67 hosts = $1,440 K</em></p>
 
                     <p><strong>Net Savings:</strong> DRAM Savings - NVMe Cost<br>
-                    <em>Example: $1,440L - $95.8L = $1,344 Lakhs (one-time CapEx)</em></p>
+                    <em>Example: $1,440L - $95.8L = $1,344 K (one-time CapEx)</em></p>
 
                     <h4>📈 VM Density Improvement</h4>
                     <p><strong>Formula:</strong> VCF Density = Current Density × 1.33 (33% improvement)</p>
                     <p><strong>Hosts Reduced:</strong> Total VMs ÷ Current Density - Total VMs ÷ VCF Density<br>
-                    <strong>Savings:</strong> Hosts Reduced × $40 Lakhs per host</p>
+                    <strong>Savings:</strong> Hosts Reduced × $40 K per host</p>
                     <p><em>Example: 15 VMs/host → 20 VMs/host<br>
                     1,000 VMs = 67 hosts → 50 hosts = 17 hosts saved<br>
-                    17 × $40L = $680 Lakhs (one-time CapEx)</em></p>
+                    17 × $40L = $680 K (one-time CapEx)</em></p>
                 </div>
             `
         },
@@ -186,14 +186,14 @@ function showHelp(section) {
                     <h4>💼 IT Cost Savings</h4>
                     <p><strong>Formula:</strong> IT Savings per Site = Time Saved (days) × IT Daily Cost</p>
                     <p><strong>Total Savings:</strong> IT Savings per Site × Number of Planned Sites</p>
-                    <p><em>Example: 83 days × $2L/day = $166 Lakhs per site<br>
-                    5 sites × $166L = $830 Lakhs (total IT savings)</em></p>
+                    <p><em>Example: 83 days × $2K/day = $166 K per site<br>
+                    5 sites × $166L = $830 K (total IT savings)</em></p>
 
                     <h4>🚀 Time-to-Market Value</h4>
                     <p><strong>Formula:</strong> Revenue Delay per Site = Time Saved × Production Delay Cost/day</p>
                     <p><strong>Total Value:</strong> Revenue Delay per Site × Number of Sites</p>
-                    <p><em>Example: 83 days × $10L/day = $830L per site<br>
-                    5 sites × $830L = $4,150 Lakhs in faster time-to-market</em></p>
+                    <p><em>Example: 83 days × $10K/day = $830L per site<br>
+                    5 sites × $830L = $4,150 K in faster time-to-market</em></p>
                 </div>
             `
         }
