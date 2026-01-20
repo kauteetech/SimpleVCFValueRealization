@@ -91,32 +91,48 @@ function showHelp(section) {
             `
         },
         'security': {
-            title: 'Zero Trust Architecture (vDefend)',
-            content: `
-                <div class="help-section">
-                    <h4>🔐 Security Coverage Improvement</h4>
-                    <p><strong>Formula:</strong> VCF Coverage = Current Coverage × 1.67 (67% improvement factor)</p>
-                    <p><strong>Why 67% better?</strong> VMware NSX covers both east-west (lateral) AND north-south (perimeter) traffic. Traditional tools only cover perimeter.</p>
-                    <p><em>Example: 40% coverage → 67% with VCF = 27 percentage points improvement</em></p>
+        title: 'Zero Trust Architecture (vDefend)',
+        content: (() => {
+            // Read current form inputs (fallbacks keep modal working even if field missing)
+            var currentCov = parseFloat(document.getElementById('currentSecurityCoverage')?.value);
+            if (isNaN(currentCov)) currentCov = 40;
 
-                    <h4>💰 Cost per Core Reduction</h4>
-                    <p><strong>Formula:</strong> VCF Cost = Current Cost × 0.476 (52.4% reduction)</p>
-                    <p><strong>Annual Savings:</strong><br>
-                    Savings per Core = Current Cost - VCF Cost<br>
-                    Total Savings = Savings per Core × Total Cores</p>
-                    <p><em>Example: ($15,000 - $7,140) × 8,576 cores = $674 K/year</em></p>
+            var uplift = parseFloat(document.getElementById('coverageUplift')?.value);
+            if (isNaN(uplift)) uplift = 67;
 
-                    <h4>🔧 Tool Consolidation</h4>
-                    <p><strong>Formula:</strong> Savings = (Number of Tools - 1) × $50 K per tool/year</p>
-                    <p>VCF eliminates separate L7 Firewall, IDPS, and ATP products into one unified platform.</p>
-                    <p><em>Example: 3 tools → 1 tool = 2 eliminated × $50K = $100 K/year saved</em></p>
+            // Same logic as calculator: VCF coverage = current × (1 + uplift%)
+            var vcfCov = Math.round(currentCov * (1 + uplift / 100));
+            if (vcfCov > 100) vcfCov = 100;
 
-                    <h4>👥 FTE Optimization</h4>
-                    <p><strong>Formula:</strong> FTEs Reduced = Current FTEs × 30% (automation factor)</p>
-                    <p><strong>Annual Savings:</strong> FTEs Reduced × $60 K per FTE/year</p>
-                    <p><em>Example: 4 FTEs × 30% = 1.2 FTEs → 1 FTE × $60 K = $60 K/year</em></p>
-                </div>
-            `
+            var ppImprovement = Math.max(0, Math.round(vcfCov - currentCov));
+
+            return `
+            <div class="help-section">
+                <h4>🔐 Security Coverage Improvement</h4>
+                <p><strong>Formula:</strong> VCF Coverage = Current Coverage × (1 + Uplift% / 100)</p>
+                <p><strong>Uplift%:</strong> User input (currently set to ${uplift}%)</p>
+                <p><strong>Why uplift?</strong> VMware NSX covers both east-west (lateral) AND north-south (perimeter) traffic. Traditional tools only cover perimeter.</p>
+                <p><em>Example: ${currentCov}% coverage → ${vcfCov}% with VCF = ${ppImprovement} percentage points improvement</em></p>
+
+                <h4>💰 Cost per Core Reduction</h4>
+                <p><strong>Formula:</strong> VCF Cost = Current Cost × 0.476 (52.4% reduction)</p>
+                <p><strong>Annual Savings:</strong><br>
+                Savings per Core = Current Cost - VCF Cost<br>
+                Total Savings = Savings per Core × Total Cores</p>
+                <p><em>Example: ($15,000 - $7,140) × 8,576 cores = $674K/year</em></p>
+
+                <h4>🔧 Tool Consolidation</h4>
+                <p><strong>Formula:</strong> Savings = (Number of Tools - 1) × $50K per tool/year</p>
+                <p>VCF eliminates separate L7 Firewall, IDPS, and ATP products into one unified platform.</p>
+                <p><em>Example: 3 tools → 1 tool = 2 eliminated × $50K = $100K/year saved</em></p>
+
+                <h4>👥 FTE Optimization</h4>
+                <p><strong>Formula:</strong> FTEs Reduced = Current FTEs × 30% (automation factor)</p>
+                <p><strong>Annual Savings:</strong> FTEs Reduced × $60K per FTE/year</p>
+                <p><em>Example: 4 FTEs × 30% = 1.2 FTEs → 1 FTE × $60K = $60K/year</em></p>
+            </div>
+            `;
+        })()
         },
         'dr': {
             title: 'Active-Active DC & DR',
@@ -138,12 +154,12 @@ function showHelp(section) {
                     <strong>Savings:</strong> Current Cost - VCF Cost</p>
                     <p><em>Example: 2 tests × 3 days × $2K = $12K/year<br>
                     VCF: 2 tests × 0.5 days × $2K = $2K/year<br>
-                    Savings: $10 K/year</em></p>
+                    Savings: $10K/year</em></p>
 
                     <h4>⚠️ Downtime Risk Reduction</h4>
                     <p><strong>Formula:</strong> Hours Saved = Current RTO - VCF RTO<br>
                     <strong>Annual Value:</strong> Hours Saved × Downtime Cost/Hour × Expected Incidents/Year</p>
-                    <p><em>Example: (8 hours - 0.083 hours) × $50K/hour × 1 incident = $395 K/year</em></p>
+                    <p><em>Example: (8 hours - 0.083 hours) × $50K/hour × 1 incident = $395K/year</em></p>
                 </div>
             `
         },
@@ -158,18 +174,18 @@ function showHelp(section) {
                     DRAM Saved per Host = DRAM per Host × 35%<br>
                     Total DRAM Savings = DRAM Saved × DRAM Cost/GB × Number of Hosts</p>
                     <p><em>Example: 2,048 GB × 35% = 716.8 GB saved per host<br>
-                    716.8 GB × $3,000/GB × 67 hosts = $1,440 K</em></p>
+                    716.8 GB × $3,000/GB × 67 hosts = $1,440K</em></p>
 
                     <p><strong>Net Savings:</strong> DRAM Savings - NVMe Cost<br>
-                    <em>Example: $1,440K - $95.8K = $1,344 K (one-time CapEx)</em></p>
+                    <em>Example: $1,440K - $95.8K = $1,344K (one-time CapEx)</em></p>
 
                     <h4>📈 VM Density Improvement</h4>
                     <p><strong>Formula:</strong> VCF Density = Current Density × 1.33 (33% improvement)</p>
                     <p><strong>Hosts Reduced:</strong> Total VMs ÷ Current Density - Total VMs ÷ VCF Density<br>
-                    <strong>Savings:</strong> Hosts Reduced × $40 K per host</p>
+                    <strong>Savings:</strong> Hosts Reduced × $40K per host</p>
                     <p><em>Example: 15 VMs/host → 20 VMs/host<br>
                     1,000 VMs = 67 hosts → 50 hosts = 17 hosts saved<br>
-                    17 × $40K = $680 K (one-time CapEx)</em></p>
+                    17 × $40K = $680K (one-time CapEx)</em></p>
                 </div>
             `
         },
@@ -186,14 +202,14 @@ function showHelp(section) {
                     <h4>💼 IT Cost Savings</h4>
                     <p><strong>Formula:</strong> IT Savings per Site = Time Saved (days) × IT Daily Cost</p>
                     <p><strong>Total Savings:</strong> IT Savings per Site × Number of Planned Sites</p>
-                    <p><em>Example: 83 days × $2K/day = $166 K per site<br>
-                    5 sites × $166K = $830 K (total IT savings)</em></p>
+                    <p><em>Example: 83 days × $2K/day = $166K per site<br>
+                    5 sites × $166K = $830K (total IT savings)</em></p>
 
                     <h4>🚀 Time-to-Market Value</h4>
                     <p><strong>Formula:</strong> Revenue Delay per Site = Time Saved × Production Delay Cost/day</p>
                     <p><strong>Total Value:</strong> Revenue Delay per Site × Number of Sites</p>
                     <p><em>Example: 83 days × $10K/day = $830K per site<br>
-                    5 sites × $830K = $4,150 K in faster time-to-market</em></p>
+                    5 sites × $830K = $4,150K in faster time-to-market</em></p>
                 </div>
             `
         }
@@ -269,7 +285,9 @@ function getFormData() {
         currentDeployTime: parseInt(document.getElementById('currentDeployTime').value),
         plannedSites: parseInt(document.getElementById('plannedSites').value),
         itDailyCost: parseFloat(document.getElementById('itDailyCost').value),
-        prodDelayCost: parseFloat(document.getElementById('prodDelayCost').value)
+        prodDelayCost: parseFloat(document.getElementById('prodDelayCost').value),
+        coverageUplift: parseFloat(document.getElementById('coverageUplift').value)
+
     };
 }
 
@@ -282,7 +300,7 @@ function performCalculations(d) {
         competitorTotalCost += tool.cost;
     });
 
-    var vcfSecurityCoverage = Math.round(d.currentSecurityCoverage * 1.67);
+    var vcfSecurityCoverage = Math.round(d.currentSecurityCoverage * (1 + (d.coverageUplift / 100)));
     if (vcfSecurityCoverage > 100) vcfSecurityCoverage = 100;
 
     var coverageImprovement = vcfSecurityCoverage - d.currentSecurityCoverage;
@@ -409,13 +427,11 @@ function displayComparisonChart(r, d) {
     var vdefendCost = r.security.vmwareCostPerCore;
     var competitorTotal = r.security.competitorTotalCost;
     var savingsPercent = Math.round(((competitorTotal - vdefendCost) / vdefendCost) * 100);
-    var currSymbol = '$';
 
     var html = '<div class="vdefend-column">';
-
     html += '<div class="vdefend-bar">';
     html += '<div class="vdefend-label">vDefend</div>';
-
+    html += '<div class="vdefend-price">$' + new Intl.NumberFormat('en-IN').format(Math.round(vdefendCost)) + '/core</div>';
     html += '</div></div>';
 
     html += '<div class="comparison-arrow">';
