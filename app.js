@@ -5,9 +5,9 @@ var conversionRate = 84;
 var toolColors = [
   'linear-gradient(180deg, #9C27B0 0%, #7B1FA2 100%)',
   'linear-gradient(180deg, #FF9800 0%, #F57C00 100%)',
-  'linear-gradient(180deg, #FFB74D 0%, #FF9800 100%)',
+  'linear-gradient(180deg, #039BE5 0%, #0277BD 100%)', 
   'linear-gradient(180deg, #E91E63 0%, #C2185B 100%)',
-  'linear-gradient(180deg, #F44336 0%, #D32F2F 100%)'
+  'linear-gradient(180deg, #15d095ff 0%, #0aa058ff 100%)'
 ];
 
 document.addEventListener('DOMContentLoaded', function () {
