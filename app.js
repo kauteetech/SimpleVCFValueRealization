@@ -5,9 +5,10 @@ var conversionRate = 84;
 var toolColors = [
   'linear-gradient(180deg, #9C27B0 0%, #7B1FA2 100%)',
   'linear-gradient(180deg, #FF9800 0%, #F57C00 100%)',
+  'linear-gradient(180deg, #15d095ff 0%, #0aa058ff 100%)',
   'linear-gradient(180deg, #039BE5 0%, #0277BD 100%)', 
-  'linear-gradient(180deg, #E91E63 0%, #C2185B 100%)',
-  'linear-gradient(180deg, #15d095ff 0%, #0aa058ff 100%)'
+  'linear-gradient(180deg, #E91E63 0%, #C2185B 100%)'
+
 ];
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -261,15 +262,31 @@ function showHelp(section) {
     infrastructure: {
       title: 'Infrastructure Baseline',
       content: `
-        <div class="help-section">
-          <h4>Purpose</h4>
-          <p>These inputs size your environment for host count, core count, and workload coverage calculations.</p>
-          <h4>Core Sizing</h4>
-          <p><strong>Hosts Needed:</strong> Total VMs ÷ VMs per Host (rounded up)</p>
-          <p><strong>Total Cores:</strong> Hosts × 128 cores per host (2×64 core servers)</p>
-          <h4>Coverage</h4>
-          <p><strong>Protected Apps:</strong> Total Apps × Coverage%</p>
-        </div>
+            <div class="help-section">
+                <h4>📊 Purpose</h4>
+                <p>Establishes your environment size for all calculations. These inputs determine host counts, core counts, and application coverage.</p>
+
+                <h4>🔢 How Values Are Used</h4>
+
+                <p><strong>Total Hosts Calculation:</strong><br>
+                Hosts Needed = Total VMs ÷ VMs per Host<br>
+                <em>Example: 1,000 VMs ÷ 15 VMs/host = 67 hosts (rounded up)</em></p>
+
+                <p><strong>Total Cores Calculation:</strong><br>
+                Total Cores = Hosts × 128 cores per host (standard 2x64 core servers)<br>
+                <em>Example: 67 hosts × 128 = 8,576 cores</em></p>
+
+                <p><strong>Application Coverage:</strong><br>
+                Protected Apps = Total Apps × Security Coverage %<br>
+                <em>Example: 500 apps × 40% = 200 apps currently protected</em></p>
+
+                <h4>✅ Best Practices</h4>
+                <ul>
+                    <li><strong>Total Applications:</strong> Count all production workloads, not just VMs</li>
+                    <li><strong>VMs per Host:</strong> Use average density across your clusters</li>
+                    <li><strong>Number of Datacenters:</strong> Count production DCs only (exclude dev/test)</li>
+                </ul>
+            </div>
       `
     },
 
@@ -323,10 +340,28 @@ function showHelp(section) {
       title: 'Active-Active DC & DR',
       content: `
         <div class="help-section">
-          <h4>RPO / RTO</h4>
-          <p>Assumes VCF enables 0 min RPO and 5 min RTO through automation and active-active design.</p>
-          <h4>DR Testing</h4>
-          <p>Current test effort vs automated/shortened test effort is used to estimate annual savings.</p>
+            <h4>💾 RPO (Recovery Point Objective)</h4>
+            <p><strong>Formula:</strong> VCF RPO = 0 minutes (Stretch Clusters provide zero data loss)</p>
+            <p><strong>Improvement:</strong> (Current RPO - 0) / Current RPO × 100%</p>
+            <p><em>Example: 60 minutes → 0 minutes = 100% improvement</em></p>
+
+            <h4>⏱️ RTO (Recovery Time Objective)</h4>
+            <p><strong>Formula:</strong> VCF RTO = 5 minutes (automated failover)</p>
+            <p><strong>Improvement:</strong> (Current RTO - 5 min) / Current RTO × 100%</p>
+            <p><em>Example: 8 hours (480 min) → 5 min = 99% faster recovery</em></p>
+
+            <h4>🧪 DR Testing Savings</h4>
+            <p><strong>Current Cost:</strong> Tests/Year × Test Duration (days) × IT Daily Cost<br>
+            <strong>VCF Cost:</strong> Tests/Year × 0.5 days × IT Daily Cost<br>
+            <strong>Savings:</strong> Current Cost - VCF Cost</p>
+            <p><em>Example: 2 tests × 3 days × $2K = $12K/year<br>
+            VCF: 2 tests × 0.5 days × $2K = $2K/year<br>
+            Savings: $10K/year</em></p>
+
+            <h4>⚠️ Downtime Risk Reduction</h4>
+            <p><strong>Formula:</strong> Hours Saved = Current RTO - VCF RTO<br>
+            <strong>Annual Value:</strong> Hours Saved × Downtime Cost/Hour × Expected Incidents/Year</p>
+            <p><em>Example: (8 hours - 0.083 hours) × $50K/hour × 1 incident = $395K/year</em></p>
         </div>
       `
     },
@@ -335,10 +370,25 @@ function showHelp(section) {
       title: 'Platform Efficiency',
       content: `
         <div class="help-section">
-          <h4>Memory Tiering</h4>
-          <p>Models a 35% DRAM reduction with NVMe tiering, comparing DRAM capex avoided vs NVMe cost.</p>
-          <h4>VM Density</h4>
-          <p>Models a 33% VM density improvement and estimates host reduction value.</p>
+            <h4>💾 Memory Tiering Savings</h4>
+            <p><strong>DRAM Reduction:</strong> 35% using 1:1 DRAM:NVMe memory tiering</p>
+
+            <p><strong>DRAM Savings Calculation:</strong><br>
+            DRAM Saved per Host = DRAM per Host × 35%<br>
+            Total DRAM Savings = DRAM Saved × DRAM Cost/GB × Number of Hosts</p>
+            <p><em>Example: 2,048 GB × 35% = 716.8 GB saved per host<br>
+            716.8 GB × $3,000/GB × 67 hosts = $1,440K</em></p>
+
+            <p><strong>Net Savings:</strong> DRAM Savings - NVMe Cost<br>
+            <em>Example: $1,440K - $95.8K = $1,344K (one-time CapEx)</em></p>
+
+            <h4>📈 VM Density Improvement</h4>
+            <p><strong>Formula:</strong> VCF Density = Current Density × 1.33 (33% improvement)</p>
+            <p><strong>Hosts Reduced:</strong> Total VMs ÷ Current Density - Total VMs ÷ VCF Density<br>
+            <strong>Savings:</strong> Hosts Reduced × $40K per host</p>
+            <p><em>Example: 15 VMs/host → 20 VMs/host<br>
+            1,000 VMs = 67 hosts → 50 hosts = 17 hosts saved<br>
+            17 × $40K = $680K (one-time CapEx)</em></p>
         </div>
       `
     },
@@ -347,8 +397,23 @@ function showHelp(section) {
       title: 'Rapid Deployment',
       content: `
         <div class="help-section">
-          <h4>Deployment Speed</h4>
-          <p>Models new site deployment reduced to 7 days and estimates IT savings + time-to-market value.</p>
+            <h4>⚡ Deployment Time Reduction</h4>
+            <p><strong>Formula:</strong> VCF Deployment = 7 days (Cloud Builder automation)</p>
+            <p><strong>Time Saved:</strong> Current Time - 7 days<br>
+            <strong>Percentage:</strong> (Time Saved / Current Time) × 100%</p>
+            <p><em>Example: 90 days → 7 days = 83 days saved (92% faster)</em></p>
+
+            <h4>💼 IT Cost Savings</h4>
+            <p><strong>Formula:</strong> IT Savings per Site = Time Saved (days) × IT Daily Cost</p>
+            <p><strong>Total Savings:</strong> IT Savings per Site × Number of Planned Sites</p>
+            <p><em>Example: 83 days × $2K/day = $166K per site<br>
+            5 sites × $166K = $830K (total IT savings)</em></p>
+
+            <h4>🚀 Time-to-Market Value</h4>
+            <p><strong>Formula:</strong> Revenue Delay per Site = Time Saved × Production Delay Cost/day</p>
+            <p><strong>Total Value:</strong> Revenue Delay per Site × Number of Sites</p>
+            <p><em>Example: 83 days × $10K/day = $830K per site<br>
+            5 sites × $830K = $4,150K in faster time-to-market</em></p>
         </div>
       `
     }
