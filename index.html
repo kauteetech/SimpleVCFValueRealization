@@ -1,332 +1,484 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VCF 9.0 Business Value Calculator</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VCF 9.0 Business Value Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>VCF 9.0 Business Value Calculator</h1>
-            <p>Quantify Lateral Security (Zero Trust), Active-Active DC, Platform Efficiency & Rapid Deployment Benefits</p>
-        </div>
+  <div class="container">
+    <div class="header">
+      <div class="header-controls">
+        <button class="currency-btn" id="currencyBtn" onclick="toggleCurrency()">
+          <span class="currency-icon">💵</span>
+          <span id="currencyLabel">USD</span>
+        </button>
 
-        <div class="main-content">
-            <form id="valueForm">
-                <!-- Infrastructure Baseline Section -->
-                <div class="section">
-                    <div class="section-header">
-                        <div class="section-header-left">
-                            <div class="section-icon">🏢</div>
-                            <div>
-                                <div class="section-title">Infrastructure Baseline</div>
-                                <div class="section-subtitle">Current environment details</div>
-                            </div>
-                        </div>
-                        <button type="button" class="help-btn" onclick="showHelp('infrastructure')">
-                            <span>❓</span>
-                            <span>How is this calculated?</span>
-                        </button>
-                    </div>
+        <button class="settings-btn" onclick="openSettings()" title="Settings">⚙</button>
+      </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Total Applications</label>
-                            <input type="number" class="form-input" id="totalApps" value="500" min="100" step="50">
-                            <div class="helper-text">Number of applications in your datacenter</div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Total VMs</label>
-                            <input type="number" class="form-input" id="totalVMs" value="1000" min="100" step="100">
-                            <div class="helper-text">Current virtual machine count</div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Current VMs per Host</label>
-                            <input type="number" class="form-input" id="currentDensity" value="15" min="10" step="5">
-                            <div class="helper-text">Without memory tiering</div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Number of Datacenters</label>
-                            <input type="number" class="form-input" id="numDCs" value="2" min="1" step="1">
-                            <div class="helper-text">Primary + DR sites</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Security Section -->
-                <div class="section">
-                    <div class="section-header">
-                        <div class="section-header-left">
-                            <div class="section-icon">🔒</div>
-                            <div>
-                                <div class="section-title">Lateral Security (Zero Trust Architecture)</div>
-                                <div class="section-subtitle">Compare VMware vDefend vs Competition</div>
-                            </div>
-                        </div>
-                        <button type="button" class="help-btn" onclick="showHelp('security')">
-                            <span>❓</span>
-                            <span>How is this calculated?</span>
-                        </button>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">
-                            <span>✅</span>
-                            <span>VMware vDefend - Single Integrated Solution</span>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">vDefend Cost per Core ($)</label>
-                                <input type="number" class="form-input" id="vmwareCostPerCore" value="85" min="10" step="5">
-                                <div class="helper-text">Single solution for IDS/IPS, ATP & NDR</div>
-
-                                <label class="form-label">Coverage uplift (%)</label>
-                                <input type="number" class="form-input" id="coverageUplift" value="67" min="0" max="300" step="1">
-                                <div class="helper-text">Expected coverage increase with VCF/vDefend</div>
-                            </div>
-
-
-
-
-                            <div class="form-group">
-                                <label class="form-label">Current Security Coverage (%)</label>
-                                <input type="number" class="form-input" id="currentSecurityCoverage" value="40" min="0" max="100" step="5">
-                                <div class="helper-text">% Apps protected today</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">
-                            <span>⚠️</span>
-                            <span>Competitor Solution (Multiple Products)</span>
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label class="form-label">Number of Competitor Tools Required</label>
-                            <select class="form-select" id="numCompetitorTools" onchange="updateCompetitorTools()">
-                                <option value="2">2 Products</option>
-                                <option value="3" selected>3 Products</option>
-                                <option value="4">4 Products</option>
-                                <option value="5">5 Products</option>
-                            </select>
-                            <div class="helper-text">Separate security products needed</div>
-                        </div>
-
-                        <div id="competitorToolsContainer" class="dynamic-tools"></div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Security Admin FTEs</label>
-                            <input type="number" class="form-input" id="securityFTEs" value="4" min="1" step="1">
-                            <div class="helper-text">Staff managing security infrastructure</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DR Section -->
-                <div class="section">
-                    <div class="section-header">
-                        <div class="section-header-left">
-                            <div class="section-icon">🔄</div>
-                            <div>
-                                <div class="section-title">Active-Active DC & DR</div>
-                                <div class="section-subtitle">Business continuity improvements</div>
-                            </div>
-                        </div>
-                        <button type="button" class="help-btn" onclick="showHelp('dr')">
-                            <span>❓</span>
-                            <span>How is this calculated?</span>
-                        </button>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Current RPO (minutes)</label>
-                            <input type="number" class="form-input" id="currentRPO" value="60" min="1" step="5">
-                            <div class="helper-text">Recovery Point Objective - data loss window</div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Current RTO (hours)</label>
-                            <input type="number" class="form-input" id="currentRTO" value="8" min="1" step="1">
-                            <div class="helper-text">Recovery Time Objective - downtime duration</div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">DR Testing Frequency (per year)</label>
-                            <input type="number" class="form-input" id="drTestFreq" value="2" min="1" step="1">
-                            <div class="helper-text">Number of DR drills conducted annually</div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">DR Test Duration (days)</label>
-                            <input type="number" class="form-input" id="drTestDuration" value="3" min="1" step="1">
-                            <div class="helper-text">Days to complete one DR test</div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Annual Downtime Cost ($K/hour)</label>
-                            <input type="number" class="form-input" id="downtimeCost" value="0.6" min="0.1" step="0.1">
-                            <div class="helper-text">Business impact of unplanned outages</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Platform Efficiency Section -->
-                <div class="section">
-                    <div class="section-header">
-                        <div class="section-header-left">
-                            <div class="section-icon">⚡</div>
-                            <div>
-                                <div class="section-title">Platform Efficiency</div>
-                                <div class="section-subtitle">Memory tiering & resource optimization</div>
-                            </div>
-                        </div>
-                        <button type="button" class="help-btn" onclick="showHelp('platform')">
-                            <span>❓</span>
-                            <span>How is this calculated?</span>
-                        </button>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">DRAM per Host (GB)</label>
-                            <input type="number" class="form-input" id="dramPerHost" value="2048" min="512" step="256">
-                            <div class="helper-text">Current memory configuration</div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">DRAM Cost per GB ($)</label>
-                            <input type="number" class="form-input" id="dramCost" value="36" min="5" step="1">
-                            <div class="helper-text">Enterprise server DRAM pricing</div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">NVMe per Host (TB)</label>
-                            <input type="number" class="form-input" id="nvmePerHost" value="10" min="5" step="1">
-                            <div class="helper-text">NVMe storage capacity</div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">NVMe Cost per GB ($)</label>
-                            <input type="number" class="form-input" id="nvmeCost" value="2.4" min="0.5" step="0.1">
-                            <div class="helper-text">Enterprise NVMe pricing</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Deployment Section -->
-                <div class="section">
-                    <div class="section-header">
-                        <div class="section-header-left">
-                            <div class="section-icon">🚀</div>
-                            <div>
-                                <div class="section-title">New Site Deployment</div>
-                                <div class="section-subtitle">Factory/branch onboarding speed</div>
-                            </div>
-                        </div>
-                        <button type="button" class="help-btn" onclick="showHelp('deployment')">
-                            <span>❓</span>
-                            <span>How is this calculated?</span>
-                        </button>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Current Site Deployment Time (days)</label>
-                            <input type="number" class="form-input" id="currentDeployTime" value="90" min="30" step="10">
-                            <div class="helper-text">Time to deploy & integrate new factory site</div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Planned New Sites (next 12 months)</label>
-                            <input type="number" class="form-input" id="plannedSites" value="5" min="1" step="1">
-                            <div class="helper-text">New factories/branches to be deployed</div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">IT Team Cost per Day ($K)</label>
-                            <input type="number" class="form-input" id="itDailyCost" value="0.024" min="0.001" step="0.001">
-                            <div class="helper-text">Daily cost of deployment team</div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Production Delay Cost per Day ($K)</label>
-                            <input type="number" class="form-input" id="prodDelayCost" value="0.12" min="0.01" step="0.01">
-                            <div class="helper-text">Business impact of delayed site launch</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="calculate-section">
-                    <button type="button" class="btn btn-primary" onclick="calculateValue()">
-                        Calculate Business Value
-                    </button>
-                </div>
-            </form>
-
-            <!-- Results Section -->
-            <div id="results" class="results">
-                <div class="results-header">
-                    <h2>VCF 9.0 Business Value Analysis</h2>
-                    <p>Quantified benefits across security, resilience, efficiency & agility</p>
-                </div>
-
-                <div class="cost-comparison-box">
-                    <h3 class="cost-comparison-title">VMware vDefend - Cost of Ownership</h3>
-                    <p class="cost-comparison-subtitle">Comparing Distributed Firewall scenarios</p>
-                    <div class="comparison-chart" id="comparisonChart"></div>
-                </div>
-
-                <h3 style="color: #003F87; font-size: 20px; margin-bottom: 20px;">Lateral Security Value</h3>
-                <div class="value-cards" id="securityCards"></div>
-                <table class="comparison-table" id="securityTable"></table>
-
-                <hr class="section-divider">
-
-                <h3 style="color: #003F87; font-size: 20px; margin-bottom: 20px;">Active-Active DC & DR Value</h3>
-                <div class="value-cards" id="drCards"></div>
-                <table class="comparison-table" id="drTable"></table>
-
-                <hr class="section-divider">
-
-                <h3 style="color: #003F87; font-size: 20px; margin-bottom: 20px;">Platform Efficiency Value</h3>
-                <div class="value-cards" id="platformCards"></div>
-                <table class="comparison-table" id="platformTable"></table>
-
-                <hr class="section-divider">
-
-                <h3 style="color: #003F87; font-size: 20px; margin-bottom: 20px;">Rapid Deployment Value</h3>
-                <div class="value-cards" id="deploymentCards"></div>
-                <table class="comparison-table" id="deploymentTable"></table>
-
-                <div class="benefit-banner" id="benefitBanner"></div>
-                <div class="roi-summary" id="roiSummary"></div>
-            </div>
-        </div>
+      <h1>VCF 9.0 Business Value Calculator</h1>
+      <p>Quantify Lateral Security (Zero Trust), Active-Active DC, Platform Efficiency & Rapid Deployment Benefits</p>
     </div>
 
-    <!-- Help Modal -->
-    <div id="helpModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="helpTitle">Calculation Guide</h3>
-                <button class="close-btn" onclick="closeHelp()">&times;</button>
+    <div class="main-content">
+      <form id="valueForm" onsubmit="return false;">
+        <!-- Infrastructure Baseline -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-header-left">
+              <div class="section-icon">🏗️</div>
+              <div>
+                <div class="section-title">Infrastructure Baseline</div>
+                <div class="section-subtitle">Current environment details</div>
+              </div>
             </div>
-            <div class="modal-body" id="helpBody"></div>
-        </div>
-    </div>
 
-    <script src="app.js"></script>
+            <button type="button" class="help-btn" onclick="showHelp('infrastructure')">
+              <span>❓</span><span>How is this calculated?</span>
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Total Applications</label>
+              <input type="number" class="form-input" id="totalApps" value="500" min="0" step="50" />
+              <div class="helper-text">Number of applications in your datacenter</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Total VMs</label>
+              <input type="number" class="form-input" id="totalVMs" value="1000" min="0" step="100" />
+              <div class="helper-text">Current virtual machine count</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Current VMs per Host</label>
+              <input type="number" class="form-input" id="currentDensity" value="15" min="1" step="1" />
+              <div class="helper-text">Without memory tiering</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Number of Datacenters</label>
+              <input type="number" class="form-input" id="numDCs" value="2" min="1" step="1" />
+              <div class="helper-text">Primary + DR sites</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lateral Security -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-header-left">
+              <div class="section-icon">🛡️</div>
+              <div>
+                <div class="section-title">Lateral Security (Zero Trust Architecture)</div>
+                <div class="section-subtitle">Compare VMware vDefend vs Competition</div>
+              </div>
+            </div>
+
+            <button type="button" class="help-btn" onclick="showHelp('security')">
+              <span>❓</span><span>How is this calculated?</span>
+            </button>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-title"><span>✅</span> VMware vDefend (Single Integrated Solution)</div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">vDefend Cost per Core <span class="currency-symbol"></span></label>
+                <input type="number" class="form-input" id="vmwareCostPerCore" value="85" min="1" step="1" />
+                <div class="helper-text">Single solution for IDS/IPS, ATP & NDR</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Current Security Coverage (%)</label>
+                <input type="number" class="form-input" id="currentSecurityCoverage" value="40" min="0" max="100" step="1" />
+                <div class="helper-text">Apps protected today</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Target Coverage with vDefend (%)</label>
+                <input type="number" class="form-input" id="targetSecurityCoverage" value="67" min="0" max="100" step="1" />
+                <div class="helper-text">Expected % of total apps protected with vDefend</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-title"><span>🏢</span> Competitor Solution (Multiple Products)</div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label class="form-label">Number of Competitor Tools Required</label>
+              <select class="form-select" id="numCompetitorTools" onchange="updateCompetitorTools()">
+                <option value="2">2 Products</option>
+                <option value="3" selected>3 Products</option>
+                <option value="4">4 Products</option>
+                <option value="5">5 Products</option>
+              </select>
+              <div class="helper-text">Separate security products needed</div>
+            </div>
+
+            <div id="competitorToolsContainer" class="dynamic-tools"></div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Security Admin FTEs</label>
+                <input type="number" class="form-input" id="securityFTEs" value="4" min="0" step="1" />
+                <div class="helper-text">Staff managing security infrastructure</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active-Active DC & DR -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-header-left">
+              <div class="section-icon">🔁</div>
+              <div>
+                <div class="section-title">Active-Active DC & DR</div>
+                <div class="section-subtitle">Business continuity improvements</div>
+              </div>
+            </div>
+
+            <button type="button" class="help-btn" onclick="showHelp('dr')">
+              <span>❓</span><span>How is this calculated?</span>
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Current RPO (minutes)</label>
+              <input type="number" class="form-input" id="currentRPO" value="60" min="0" step="1" />
+              <div class="helper-text">Data loss window</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Current RTO (hours)</label>
+              <input type="number" class="form-input" id="currentRTO" value="8" min="0" step="0.5" />
+              <div class="helper-text">Downtime duration</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">DR Testing Frequency (per year)</label>
+              <input type="number" class="form-input" id="drTestFreq" value="2" min="0" step="1" />
+              <div class="helper-text">Number of DR drills annually</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">DR Test Duration (days)</label>
+              <input type="number" class="form-input" id="drTestDuration" value="3" min="0" step="1" />
+              <div class="helper-text">Days per DR test</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Annual Downtime Cost <span class="currency-symbol"></span><span class="currency-unit">K</span>/hour</label>
+              <input type="number" class="form-input" id="downtimeCost" value="0.6" min="0" step="0.1" />
+              <div class="helper-text">Business impact of unplanned outages</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Efficiency -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-header-left">
+              <div class="section-icon">⚡</div>
+              <div>
+                <div class="section-title">Platform Efficiency</div>
+                <div class="section-subtitle">Memory tiering & resource optimization</div>
+              </div>
+            </div>
+
+            <button type="button" class="help-btn" onclick="showHelp('platform')">
+              <span>❓</span><span>How is this calculated?</span>
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">DRAM per Host (GB)</label>
+              <input type="number" class="form-input" id="dramPerHost" value="2048" min="0" step="128" />
+              <div class="helper-text">Current memory configuration</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">DRAM Cost per GB <span class="currency-symbol"></span></label>
+              <input type="number" class="form-input" id="dramCost" value="36" min="0" step="1" />
+              <div class="helper-text">Enterprise server DRAM pricing</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">NVMe per Host (TB)</label>
+              <input type="number" class="form-input" id="nvmePerHost" value="10" min="0" step="1" />
+              <div class="helper-text">NVMe storage capacity</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">NVMe Cost per GB <span class="currency-symbol"></span></label>
+              <input type="number" class="form-input" id="nvmeCost" value="2.4" min="0" step="0.1" />
+              <div class="helper-text">Enterprise NVMe pricing</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Site Deployment -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-header-left">
+              <div class="section-icon">🚀</div>
+              <div>
+                <div class="section-title">New Site Deployment</div>
+                <div class="section-subtitle">Factory/branch onboarding speed</div>
+              </div>
+            </div>
+
+            <button type="button" class="help-btn" onclick="showHelp('deployment')">
+              <span>❓</span><span>How is this calculated?</span>
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Current Site Deployment Time (days)</label>
+              <input type="number" class="form-input" id="currentDeployTime" value="90" min="0" step="1" />
+              <div class="helper-text">Time to deploy & integrate new site</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Planned New Sites (next 12 months)</label>
+              <input type="number" class="form-input" id="plannedSites" value="5" min="0" step="1" />
+              <div class="helper-text">New sites to be deployed</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">IT Team Cost per Day <span class="currency-symbol"></span><span class="currency-unit">K</span></label>
+              <input type="number" class="form-input" id="itDailyCost" value="0.024" min="0" step="0.001" />
+              <div class="helper-text">Daily cost of deployment team</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Production Delay Cost per Day <span class="currency-symbol"></span><span class="currency-unit">K</span></label>
+              <input type="number" class="form-input" id="prodDelayCost" value="0.12" min="0" step="0.01" />
+              <div class="helper-text">Business impact of delayed site launch</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calculate-section">
+          <button type="button" class="btn btn-primary" onclick="calculateValue()">Calculate Business Value</button>
+        </div>
+      </form>
+
+      <!-- Results -->
+      <div id="results" class="results">
+        <div class="results-header">
+          <h2>VCF 9.0 Business Value Analysis</h2>
+          <p>Quantified benefits across security, resilience, efficiency & agility</p>
+        </div>
+
+        <div class="cost-comparison-box">
+          <h3 class="cost-comparison-title">VMware vDefend - Cost of Ownership</h3>
+          <p class="cost-comparison-subtitle">Comparing Distributed Firewall scenarios</p>
+          <div class="comparison-chart" id="comparisonChart"></div>
+        </div>
+
+        <h3 style="color:#003F87;font-size:20px;margin-bottom:20px;">Lateral Security Value</h3>
+        <div class="value-cards" id="securityCards"></div>
+        <table class="comparison-table" id="securityTable"></table>
+
+        <hr class="section-divider" />
+
+        <h3 style="color:#003F87;font-size:20px;margin-bottom:20px;">Active-Active DC & DR Value</h3>
+        <div class="value-cards" id="drCards"></div>
+        <table class="comparison-table" id="drTable"></table>
+
+        <hr class="section-divider" />
+
+        <h3 style="color:#003F87;font-size:20px;margin-bottom:20px;">Platform Efficiency Value</h3>
+        <div class="value-cards" id="platformCards"></div>
+        <table class="comparison-table" id="platformTable"></table>
+
+        <hr class="section-divider" />
+
+        <h3 style="color:#003F87;font-size:20px;margin-bottom:20px;">Rapid Deployment Value</h3>
+        <div class="value-cards" id="deploymentCards"></div>
+        <table class="comparison-table" id="deploymentTable"></table>
+
+        <div class="benefit-banner" id="benefitBanner"></div>
+        <div class="roi-summary" id="roiSummary"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Calculator Settings</h3>
+        <button class="close-btn" onclick="closeSettings()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="settings-section">
+          <h4><span>💱</span> Currency Conversion</h4>
+          <div class="settings-grid">
+            <div class="settings-item">
+              <label class="settings-label">USD to INR Rate</label>
+              <input type="number" id="usdToInrRate" class="settings-input" value="84" min="1" step="0.01" onchange="updateConversionRate()" />
+              <small style="color:#666;font-size:11px;margin-top:4px;display:block;">Used when you toggle to INR</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h4><span>🏗️</span> Infrastructure Baseline Defaults</h4>
+          <div class="settings-grid">
+            <div class="settings-item">
+              <label class="settings-label">Total Applications</label>
+              <input type="number" class="settings-input" id="settotalApps" value="500" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Total VMs</label>
+              <input type="number" class="settings-input" id="settotalVMs" value="1000" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">VMs per Host</label>
+              <input type="number" class="settings-input" id="setcurrentDensity" value="15" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Number of Datacenters</label>
+              <input type="number" class="settings-input" id="setnumDCs" value="2" />
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h4><span>🛡️</span> Lateral Security Defaults</h4>
+          <div class="settings-grid">
+            <div class="settings-item">
+              <label class="settings-label">VMware vDefend Cost/Core</label>
+              <input type="number" class="settings-input" id="setvmwareCostPerCore" value="85" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Current Security Coverage %</label>
+              <input type="number" class="settings-input" id="setcurrentSecurityCoverage" value="40" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Target Coverage with vDefend %</label>
+              <input type="number" class="settings-input" id="settargetSecurityCoverage" value="67" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Security Admin FTEs</label>
+              <input type="number" class="settings-input" id="setsecurityFTEs" value="4" />
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h4><span>🔁</span> Active-Active DC & DR Defaults</h4>
+          <div class="settings-grid">
+            <div class="settings-item">
+              <label class="settings-label">Current RPO (minutes)</label>
+              <input type="number" class="settings-input" id="setcurrentRPO" value="60" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Current RTO (hours)</label>
+              <input type="number" class="settings-input" id="setcurrentRTO" value="8" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">DR Test Frequency/year</label>
+              <input type="number" class="settings-input" id="setdrTestFreq" value="2" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">DR Test Duration (days)</label>
+              <input type="number" class="settings-input" id="setdrTestDuration" value="3" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Downtime Cost (K/hour)</label>
+              <input type="number" class="settings-input" id="setdowntimeCost" value="0.6" step="0.1" />
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h4><span>⚡</span> Platform Efficiency Defaults</h4>
+          <div class="settings-grid">
+            <div class="settings-item">
+              <label class="settings-label">DRAM per Host (GB)</label>
+              <input type="number" class="settings-input" id="setdramPerHost" value="2048" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">DRAM Cost per GB</label>
+              <input type="number" class="settings-input" id="setdramCost" value="36" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">NVMe per Host (TB)</label>
+              <input type="number" class="settings-input" id="setnvmePerHost" value="10" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">NVMe Cost per GB</label>
+              <input type="number" class="settings-input" id="setnvmeCost" value="2.4" step="0.1" />
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h4><span>🚀</span> Deployment Defaults</h4>
+          <div class="settings-grid">
+            <div class="settings-item">
+              <label class="settings-label">Deployment Time (days)</label>
+              <input type="number" class="settings-input" id="setcurrentDeployTime" value="90" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Planned New Sites</label>
+              <input type="number" class="settings-input" id="setplannedSites" value="5" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">IT Cost/Day (K)</label>
+              <input type="number" class="settings-input" id="setitDailyCost" value="0.024" step="0.001" />
+            </div>
+            <div class="settings-item">
+              <label class="settings-label">Production Delay Cost/Day (K)</label>
+              <input type="number" class="settings-input" id="setprodDelayCost" value="0.12" step="0.01" />
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button type="button" class="btn-reset" onclick="resetDefaults()">Reset to Defaults</button>
+            <button type="button" class="btn-cancel" onclick="closeSettingsCancel()">Cancel</button>
+            <button type="button" class="btn-save" onclick="saveSettings()">Save & Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="helpTitle">Calculation Guide</h3>
+        <button class="close-btn" onclick="closeHelp()">×</button>
+      </div>
+      <div class="modal-body" id="helpBody"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
